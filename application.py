@@ -13,17 +13,18 @@ app.secret_key=secret_key
 app.config['SESSION_TYPE']='filesystem'
 Session(app)
 excel.init_excel(app)
-mydb=mysql.connector.connect(host='localhost',user='root',password='Jaya@31',db='prn')
-'''db= os.environ['RDS_DB_NAME']
+#mydb=mysql.connector.connect(host='localhost',user='root',password='Jaya@31',db='prn')
+db= os.environ['RDS_DB_NAME']
 user= os.environ['RDS_USERNAME']
 password= os.environ['RDS_PASSWORD']
 host= os.environ['RDS_HOSTNAME']
 port= os.environ['RDS_PORT']
 with mysql.connector.connect(host=host,user=user,password=password,db=db) as con:
-    cursor=con.cursor(buffereTrue)
+    cursor=con.cursor(buffere=True)
     cursor.execute('create table if not exists users(username varchar(15) primary key,password varchar(15),email varchar(80),email_status enum("confirmed","not confirmed"))')
     cursor.execute('create table if not exists(nid binary(16) primary key,title tinytext,content text,date timestamp default current_timestamp on update current_timestamp,added_by varchar(15),foreign key(added_by) references users(username))')
-    cursor.execute('create table if not exists (fid binary(16) primary key,extension varchar(8),fielddata longblob,date timestamp default now() on update now(),added_by varchar(15),foreign key (added_by) references users(username))')'''
+    cursor.execute('create table if not exists (fid binary(16) primary key,extension varchar(8),fielddata longblob,date timestamp default now() on update now(),added_by varchar(15),foreign key (added_by) references users(username))')
+    mydb= mysql.connector.connect(host=host,user=user,password=password,db=db)
 @app.route('/')
 def index():
     return render_template('title.html')
@@ -360,5 +361,5 @@ def getdata():
         return excel.make_response_from_array(array_data,'xlsx',filename='notesdata')
     else:
         return redirect(url_for('login'))
-if __name__=="__main__:"
+if __name__=='__main__':
 app.run()
